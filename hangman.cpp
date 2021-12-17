@@ -5,17 +5,18 @@ using namespace std;
 bool ended = false;
 
 //shows the art of the game
-void Game (string word, int lifes, string letters) {
+void Game (string word, int lifes, string letters, string wrong) {
 	system("cls");
 
 	cout << "\n_____    ";
 
-	//write the discovered letters of the secret word
+	//write the letters of the secret word and ends the game
 	#pragma region SecretWord
 	ended = true;
 	bool flag = false;
 
 	for (int i = 0; i < word.length(); i++) {
+		//prints the right letters
 		string finded = "-";
 		for (int j = 0; j < letters.length(); j++) {
 			if (word[i] == letters[j]) {
@@ -31,6 +32,9 @@ void Game (string word, int lifes, string letters) {
 			ended = false;
 		}
 	}
+
+	//prints the wrong letters
+	cout << "          " << wrong;
 	#pragma endregion
 
 	cout << "\n|   |\n|   ";
@@ -48,7 +52,7 @@ void Game (string word, int lifes, string letters) {
 int main() {
 
 	//player1 inputs the secret word
-	cout << "Digite a palavra secreta (letras MAIUSCULAS): ";
+	cout << "\nType the secret word (UPPERCASE letters): ";
 	string word;
 	cin >> word;
 	system("cls");
@@ -56,7 +60,8 @@ int main() {
 	//setup the game
 	int lifes = 5;
 	string right_letters;
-	Game(word, lifes, right_letters);
+	string wrong_letters;
+	Game(word, lifes, right_letters, wrong_letters);
 
 	do {
 		checkpoint:
@@ -70,7 +75,7 @@ int main() {
 		for (int i = 0; i < word.length(); i++) {
 			if (word[i] == letter) {
 				right_letters += letter;
-				Game(word, lifes, right_letters);
+				Game(word, lifes, right_letters, wrong_letters);
 				if (!ended) goto checkpoint;
 			}
 		}
@@ -78,7 +83,8 @@ int main() {
 		//remove a life if player2 is wrong
 		if (!ended) {
 			lifes--;
-			Game(word, lifes, right_letters);
+			wrong_letters += letter;
+			Game(word, lifes, right_letters, wrong_letters);
 		}
 
 	} while (lifes > 0 && !ended);
